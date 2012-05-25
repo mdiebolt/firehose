@@ -9,8 +9,7 @@ module Firehose
         last_sequence = env[RACK_LAST_MESSAGE_SEQUENCE_HEADER].to_i
         cors_origin = env['HTTP_ORIGIN']
 
-        case method
-        when 'PUT'
+        if method == 'PUT'
           body = env['rack.input'].read
           Firehose.logger.debug "HTTP published `#{body}` to `#{path}`"
           publisher.publish(path, body)
