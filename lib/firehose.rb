@@ -3,7 +3,12 @@ ENV['RACK_ENV'] ||= 'development'
 require 'firehose/version'
 require 'em-hiredis' # TODO Move this into a Redis module so that we can auto-load it. Lots of the CLI tools don't need this.
 require 'firehose/logging'
-require 'firehose/rails' if defined?(::Rails::Engine) # TODO Detect Sprockets instead of the jankin Rails::Engine test.
+
+if defined? ::Rails::Engine
+  require 'firehose/rails'
+elsif defined? ::Sprockets
+  require "firehose/sprockets"
+end
 
 module Firehose
   autoload :Subscriber,   'firehose/subscriber'
